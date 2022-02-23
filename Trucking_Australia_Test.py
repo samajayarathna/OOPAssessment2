@@ -1,3 +1,4 @@
+import json
 
 class Driver():
     maxDemeritPoints = 12
@@ -26,7 +27,7 @@ class Driver():
 
     def addDemeritPoints(self,newValue):
         totalDemeritPoints = self.demeritPoints + newValue
-        if totalDemeritPoints > Driver.maxDemeritPoints:
+        if totalDemeritPoints > self.maxDemeritPoints:
             print("Invalid Entry....")
         else:
             self.demeritPoints = totalDemeritPoints
@@ -38,7 +39,28 @@ class Driver():
                 print("WARNING MESSAGE: \n License Suspension is imminenet \n",self.demeritPoints, "x Demerit Points remaining"  )
         else:  
             print("Invalid Entry....")  
-            
+
+    def writeDriverFile(self):
+        textFile =open("driverDetails.txt", "a")  
+        textFile.write("\nName : ")
+        textFile.write(self.firstName)
+        textFile.write(" ")
+        textFile.write(self.lastName)
+        textFile.write("\nLicense NO: ")
+        textFile.write(str(self.licenceNo))
+        textFile.write("\nMobile :")
+        textFile.write(self.mobile)
+        textFile.write("\nDemerit Points : ")
+        textFile.write(str(self.demeritPoints))
+        textFile.write("\n License States : \n")
+
+        stateList = self.licenseState
+        addressList = self.address 
+        for element in stateList:
+            textFile.write(element + ",")
+        textFile.write("\nAddress : ")    
+        textFile.write(json.dumps(addressList))
+        textFile.close() 
 
 class Vehicle():
     def __init__(self, registrationNo, make, model, kmDriven, driverDetails) :
@@ -55,10 +77,9 @@ class Vehicle():
     def displayGeneralData(self):
         print("Registration No: ", self.registrationNo, "\nMake: ", self.make, "\nModel: ", self.model, "\nDriven KM : ", self.kmDriven)
     
-    def updateKM(self,newDrivenKm):
-        self.kmDriven += newDrivenKm
+    def updateKM(self):
+        print("\nDriven KMs before updating :", self.kmDriven)
         
-
 class Car(Vehicle):
     def __init__(self, registrationNo, make, model, kmDriven, driverDetails, bodyType, colour, uphostery, NoOfDoors):
         super().__init__(registrationNo, make, model, kmDriven, driverDetails)
@@ -68,8 +89,12 @@ class Car(Vehicle):
         self.NoOfDoors = NoOfDoors
 
     def updateKM(self, newDrivenKm):
-        return super().updateKM(newDrivenKm)
-    
+        Vehicle.updateKM(self)
+        if newDrivenKm >= 0:
+            self.kmDriven += newDrivenKm
+        else:
+            print("Invalid Entry........")
+
     def updateColour(self, newColour):
         self.colour = newColour
 
@@ -87,7 +112,11 @@ class Truck(Vehicle):
         self.NoOfWheels = NoOfWheels
 
     def updateKM(self, newDrivenKm):
-        self.kmDriven += newDrivenKm
+        Vehicle.updateKM(self)
+        if newDrivenKm >= 0:
+            self.kmDriven += newDrivenKm
+        else:
+            print("Invalid Entry........")
 
     def displayVehicleData(self):
         Vehicle.displayVehicleData(self)
@@ -106,6 +135,11 @@ def main():
     car2 = Car('OYO400','Ford','Festive',39785, driver2, 'Sedan', 'Green','Fabric', 4)
     truck1 = Truck('XJBJ882','Kenworth','BigMOther5000',150000, driver1, '40 tonnes', 5, 18 )
     truck2 = Truck('ARC542','Hyundai','iLoad',76520, driver2, '2 tonnes', 2, 4)
+
+    def readDriverFile():
+        readFile =open("driverDetails.txt", "r")  
+        for x in readFile:
+            print(x)
 
     print("driver1 and driver2 demerit points")
     print("\n..............Increase demerit points - Driver 1....................\n")
@@ -133,10 +167,10 @@ def main():
     print("\n")
     driver2.displayDriverDetails()
 
-    print("Car1 details......................\n")
+    print("\n\nCar1 details......................\n")
     car1.displayVehicleData()
     car1.updateColour('White')
-    car1.updateKM(12000)
+    car1.updateKM(-12000)
     print("\nData after updating car1 colour and driven KMs\n")
     car1.displayVehicleData()
     print("\nCar1 General Data\n")
@@ -151,7 +185,7 @@ def main():
     print("\nCar2 General Data\n")
     car2.displayGeneralData()
 
-    print("Truck1 details......................\n")
+    print("\nTruck1 details......................\n")
     truck1.displayVehicleData()
     truck1.updateKM(55000)
     print("\nData after updating truck 1 driven KMs\n")
@@ -159,7 +193,7 @@ def main():
     print("\nTruck1 General Data\n")
     truck1.displayGeneralData()
 
-    print("Truck2 details......................\n")
+    print("\nTruck2 details......................\n")
     truck2.displayVehicleData()
     truck2.updateKM(70000)
     print("\nData after updating truck 2 driven KMs\n")
@@ -167,6 +201,14 @@ def main():
     print("\nTruck2 General Data\n")
     truck2.displayGeneralData()
 
+    print("Writing Driver Details to the driverDetails.txt file..........")
+    print("No output ")
+    driver1.writeDriverFile()
+    driver2.writeDriverFile()
+
+    print("Reading driverDetails.txt file content........................")
+    readDriverFile()
+    
 if __name__ == '__main__':
     main()
     
