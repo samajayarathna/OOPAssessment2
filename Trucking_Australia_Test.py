@@ -36,7 +36,7 @@ class Driver():
         if delValue <= self.demeritPoints:
             self.demeritPoints -= delValue
             if self.demeritPoints <= 3:
-                print("WARNING MESSAGE: \n License Suspension is imminenet \n",self.demeritPoints, "x Demerit Points remaining"  )
+                print("WARNING MESSAGE: \n License Suspension is imminent \n",self.demeritPoints, "x Demerit Points remaining"  )
         else:  
             print("Invalid Entry....")  
 
@@ -61,6 +61,11 @@ class Driver():
         textFile.write("\nAddress : ")    
         textFile.write(json.dumps(addressList))
         textFile.close() 
+
+def readDriverFile():
+        readFile =open("driverDetails.txt", "r")  
+        for x in readFile:
+            print(x)
 
 class Vehicle():
     def __init__(self, registrationNo, make, model, kmDriven, driverDetails) :
@@ -92,11 +97,13 @@ class Car(Vehicle):
         Vehicle.updateKM(self)
         if newDrivenKm >= 0:
             self.kmDriven += newDrivenKm
+            print("\nsuccessfully updated the driven KMs.")
         else:
             print("Invalid Entry........")
 
     def updateColour(self, newColour):
         self.colour = newColour
+        print("\nSuccessfully updated the colour")
 
     def displayVehicleData(self):
         Vehicle.displayVehicleData(self)
@@ -115,13 +122,14 @@ class Truck(Vehicle):
         Vehicle.updateKM(self)
         if newDrivenKm >= 0:
             self.kmDriven += newDrivenKm
+            print("Successfully updated driven KMs")
         else:
             print("Invalid Entry........")
 
     def displayVehicleData(self):
         Vehicle.displayVehicleData(self)
-        print("Additional details:")
-        print("The truck details are: maximum load ", self.maxLoad, "No of Axles ", self.NoOfAxles, ",", self.NoOfWheels, "wheels ,")
+        print("Additional details: ")
+        print("maximum load ", self.maxLoad, " , No of Axles ", self.NoOfAxles, ",", self.NoOfWheels, "wheels ,")
 
 def main():
     #instantiation and hard-coding of objects
@@ -135,11 +143,6 @@ def main():
     car2 = Car('OYO400','Ford','Festive',39785, driver2, 'Sedan', 'Green','Fabric', 4)
     truck1 = Truck('XJBJ882','Kenworth','BigMOther5000',150000, driver1, '40 tonnes', 5, 18 )
     truck2 = Truck('ARC542','Hyundai','iLoad',76520, driver2, '2 tonnes', 2, 4)
-
-    def readDriverFile():
-        readFile =open("driverDetails.txt", "r")  
-        for x in readFile:
-            print(x)
 
     print("driver1 and driver2 demerit points")
     print("\n..............Increase demerit points - Driver 1....................\n")
@@ -171,7 +174,7 @@ def main():
     car1.displayVehicleData()
     car1.updateColour('White')
     car1.updateKM(-12000)
-    print("\nData after updating car1 colour and driven KMs\n")
+    print("\nData after updating car1 colour and driven KMs............\n")
     car1.displayVehicleData()
     print("\nCar1 General Data\n")
     car1.displayGeneralData()
@@ -180,7 +183,7 @@ def main():
     car2.displayVehicleData()
     car2.updateColour('Purple')
     car2.updateKM(20000)
-    print("\nData after updating car2 colour and driven KMs\n")
+    print("\nData after updating car2 colour and driven KMs..............\n")
     car2.displayVehicleData()
     print("\nCar2 General Data\n")
     car2.displayGeneralData()
@@ -188,7 +191,7 @@ def main():
     print("\nTruck1 details......................\n")
     truck1.displayVehicleData()
     truck1.updateKM(55000)
-    print("\nData after updating truck 1 driven KMs\n")
+    print("\nData after updating truck 1 driven KMs....................\n")
     truck1.displayVehicleData()
     print("\nTruck1 General Data\n")
     truck1.displayGeneralData()
@@ -196,11 +199,10 @@ def main():
     print("\nTruck2 details......................\n")
     truck2.displayVehicleData()
     truck2.updateKM(70000)
-    print("\nData after updating truck 2 driven KMs\n")
+    print("\nData after updating truck 2 driven KMs...............\n")
     truck2.displayVehicleData()
     print("\nTruck2 General Data\n")
     truck2.displayGeneralData()
-
     print("Writing Driver Details to the driverDetails.txt file..........")
     print("No output ")
     driver1.writeDriverFile()
