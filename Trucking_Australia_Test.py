@@ -2,7 +2,7 @@ import json
 
 class Driver():
     '''declare class variable called maxDemeritPoints to assign max demerit points value'''
-    maxDemeritPoints = 12
+    maxDemeritPoints = 0
 
     def __init__(self,licenceNo, firstName, lastName, mobile,address, licenseState, demeritPoints) :
         ''' initilizating instant variables '''
@@ -15,9 +15,10 @@ class Driver():
         self.demeritPoints = demeritPoints
     
     def displayDriverDetails(self):
-        '''Driver details are displayed '''
+        '''Display driver details '''
         print("The driver", self.firstName, self.lastName, ", has a driver licence number : ", self.licenceNo)
         print("Contact phone number is :", self.mobile)
+        print("Demerit Points : ", self.demeritPoints)
         print("Driver address is :")
         for x in self.address:
             print(x, ":", self.address[x])
@@ -31,11 +32,15 @@ class Driver():
 
     def addDemeritPoints(self,newValue):
         '''Takes in a number newValue, calculates new demerit points '''
-        totalDemeritPoints = self.demeritPoints + newValue
-        if totalDemeritPoints > self.maxDemeritPoints:
+        #totalDemeritPoints  = self.demeritPoints + newValue
+        maxDemeritPoints= self.demeritPoints + newValue
+        
+        #if totalDemeritPoints > self.maxDemeritPoints:
+        if maxDemeritPoints > 12:
             print("Invalid Entry....\n maximum demerit points : 12 ")
         else:
-            self.demeritPoints = totalDemeritPoints
+            #self.demeritPoints = totalDemeritPoints
+            self.demeritPoints = maxDemeritPoints
 
     def deleteDemeritPoints(self, delValue):
         '''Takes in a number delValue, calculates new demerit points'''
@@ -86,6 +91,7 @@ class Vehicle():
         self.obj_driver = objDriver
     
     def displayVehicleData(self):
+        ''' display vehicle details '''
         print("Vehicle registration number ",self.registrationNo, "is a ", self.make, ". Model is ", self.model, ". Odometer ", self.kmDriven)
         print("The driver of the vehicle is ", self.obj_driver.firstName, self.obj_driver.lastName)
         print("Licence no : ",self.obj_driver.licenceNo)
@@ -95,12 +101,14 @@ class Vehicle():
             print(self.obj_driver.licenseState[i], ":", end=" ")
 
     def GeneralData(self):
+        ''' display vehicle general data '''
         print("Registration No :", self.registrationNo)
         print("Make : ", self.make)
         print("Model : ", self.model)
         print("Driven KMs : ", self.kmDriven)
 
     def updateKM(self, newDrivenKm):
+        '''Takes in a number newDrivenKm, calculates new driven KMs'''
         if newDrivenKm >= 0:
             print("\nDriven KMs befor changing : ", self.kmDriven)
             self.kmDriven += newDrivenKm
@@ -119,6 +127,7 @@ class Car(Vehicle):
         self.NoOfDoors = NoOfDoors
 
     def updateColour(self, newColour):
+        '''Takes in a string value newColour, updates the car colour'''
         print("Colour before changing: ",self.colour)
         self.colour = newColour
         print("Successfully updated the colour")
@@ -126,7 +135,7 @@ class Car(Vehicle):
 
 
     def displayVehicleData(self):
-        ''' '''
+        '''Display car specific and general data along with driver's details '''
         Vehicle.displayVehicleData(self)
         print("\nGeneral data: body type ", self.bodyType, ", colour ", self.colour,"," ,self.uphostery,",", self.NoOfDoors, "doors.")
     
@@ -134,18 +143,20 @@ class Car(Vehicle):
         
 class Truck(Vehicle):
     def __init__(self, registrationNo, make, model, kmDriven, objDriver, maxLoad, NoOfAxles, NoOfWheels):
+        ''' initilizating instant variables '''
         super().__init__(registrationNo, make, model, kmDriven, objDriver)
         self.maxLoad = maxLoad
         self.NoOfAxles = NoOfAxles
         self.NoOfWheels = NoOfWheels
 
     def displayVehicleData(self):
+        '''Display truck specific and general data along with driver's details '''
         Vehicle.displayVehicleData(self)
         print("\nAdditional details: ")
         print("maximum load ", self.maxLoad, " , No of Axles ", self.NoOfAxles, ",", self.NoOfWheels, "wheels ,")
 
 def main():
-    #instantiation and hard-coding of objects
+    '''instantiation and hard-coding of objects'''
     states1 = ['Victoria', 'New South Wales', 'Queensland', 'Northern Territory']
     states2 = ['Victoria', 'New South Wales', 'Queensland', 'Tasmania','South Australia']
     address1 = {'Street':'178 Bluff Road','City':'Manly','State':'NSW','PostCode':'2101'}
@@ -182,9 +193,11 @@ def main():
     print("\nDriver 2 demerit points before : ")
     driver2.displayDemeritPoints()
     driver2.deleteDemeritPoints(3)
-    
+
+    car1.displayVehicleData()
     print("\nDriver 1 and Driver 2 details...............\n")
     driver1.displayDriverDetails()
+    input()
     print("\n")
     driver2.displayDriverDetails()
     
@@ -202,6 +215,7 @@ def main():
 
     print("\n\nCar1 details......................\n")
     car1.displayVehicleData()
+    car1.displaySpecificData()
 
     print("\n\nCar2 details.......................\n")
     car2.displayVehicleData()
